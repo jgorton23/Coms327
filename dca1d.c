@@ -10,7 +10,8 @@
 
 /**
  * has parameters for the number of cells and the initial address
- * initilaizes all the elements to 0
+ * initilaizes all the elements to 0 by saying for offset i from the starting address, set address[i] to 0
+ * c compiler offsets by the correct amount automatically
  */
 void init1DCA(int numCells, unsigned char* address){
     for(int i = 0; i < numCells; i++){
