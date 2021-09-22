@@ -1,3 +1,7 @@
+/**
+ * file contains prototypes of functions in dca1d.c
+ */
+
 #ifndef DCA1D
 #define DCA1D
 
