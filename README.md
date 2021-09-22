@@ -1,3 +1,6 @@
+# Project 1 - Part A
+
+## Features Implemented
 This program has 3 features implemented:
 - the ability to initialize an array of a certain length filled with 0's
 - the ability to change the value at an index to a non-negative number
@@ -5,7 +8,8 @@ This program has 3 features implemented:
 
 running the program will create an array of length 25, set the values to 1 or 2 depending on if the index is odd or even, and print the array
 
+## How to Execute the Program
 To run the program make sure you are in the base project directory, 
-type make in the terminal,
-then type ./odca in the terminal
+type `make` in the terminal,
+then type `./odca` in the terminal
 
