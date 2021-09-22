@@ -4,3 +4,5 @@ There is the set1DCA function that sets an element of the array at the given ind
 There is the display1DCA function that prints all the elements of the array separated by spaces and finishes by printing a new line
 There is the main function, not prototyped in the header file, that runs all 3 functions for a simple test of the program
 
+To run the program make sure you are in the base project directory, then type make in the terminal
+
