@@ -10,17 +10,19 @@
 typedef struct ca_t{
     unsigned char* arrayAddress;
     int numElements;
+    int numStates;
 }ca_data;
 
 typedef struct ca_t* CAPTR;
 
 void display1DCA(CAPTR pointer);
 
-int set1DCACell(CAPTR pointer, unsigned int index, unsigned char value);
+int set1DCACell(CAPTR pointer, unsigned int index, unsigned char state);
 
 void init1DCA(CAPTR pointer, int numElements);
 
 CAPTR create1DCA(int size, unsigned char value);
 
+void stepCA(CAPTR, unsigned char (*)(CAPTR, int), int);
 
 #endif
