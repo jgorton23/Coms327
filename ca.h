@@ -11,6 +11,7 @@ typedef struct ca_t{
     unsigned char* arrayAddress;
     int numElements;
     int numStates;
+    unsigned char qstate;
 }ca_data;
 
 typedef struct ca_t* CAPTR;

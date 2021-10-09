@@ -32,6 +32,10 @@ void init1DCA(CAPTR pointer, int value){
     }
 }
 
+/**
+ * when creating a 1DCA i can initialize it to any value, including those outside the range of the max values
+ * IDK how many possible states there should be/what numStates should be set to
+ */
 CAPTR create1DCA(int size, unsigned char value){
     unsigned char *p=malloc(size*sizeof(unsigned char));
     CAPTR pointer = malloc(sizeof(ca_data));
@@ -41,10 +45,11 @@ CAPTR create1DCA(int size, unsigned char value){
     pointer->arrayAddress=p;
     pointer->numElements=size;
     pointer->numStates=1;
+    pointer->qstate=value;
     init1DCA(pointer,value);
     return pointer;
 }
 
 void stepCA(CAPTR pointer, unsigned char (*func)(CAPTR, int), int wrapFlag){
-
+    
 }
