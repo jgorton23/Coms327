@@ -1,7 +1,4 @@
-#include <stdio.h>
 #include "ca.h"
-#define MINIMUM_CELLS 10
-#define MAXIMUM_CELLS 100
 
 void display1DCA(CAPTR pointer){
     int x = pointer->numElements;

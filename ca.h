@@ -13,7 +13,7 @@ typedef struct ca_t{
     unsigned char* arrayAddress;
     int numElements;
     int numStates;
-    unsigned char qstate;
+    int qstate;
     char* wrap;
 }ca_data;
 

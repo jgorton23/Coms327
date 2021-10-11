@@ -1,2 +1,3 @@
-odca: dca1d.c dca1d.h
-	gcc -o odca dca1d.c
+main.o:
+	gcc main.c ca.c ca.h
+	mv a.out odca
