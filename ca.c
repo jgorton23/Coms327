@@ -21,6 +21,7 @@ int set1DCACell(CAPTR pointer, unsigned int index, unsigned char state){
 }
 
 void init1DCA(CAPTR pointer, int value){
+    srand(time(0));
     if(pointer != NULL){
         if(value >= 0){
             for(int i = 0; i < pointer->numElements; i++){
@@ -28,16 +29,12 @@ void init1DCA(CAPTR pointer, int value){
             }
         }else{
             for(int i = 0; i < pointer->numElements; i++){
-                pointer->arrayAddress[i]=rand();
+                pointer->arrayAddress[i]=rand()%(pointer->numStates);
             }
         }
     }
 }
 
-/**
- * when creating a 1DCA i can initialize it to any value, including those outside the range of the max values
- * IDK how many possible states there should be/what numStates should be set to
- */
 CAPTR create1DCA(int size, unsigned char value){
     unsigned char *p=malloc(size*sizeof(unsigned char));
     CAPTR pointer = malloc(sizeof(ca_data));
@@ -52,5 +49,13 @@ CAPTR create1DCA(int size, unsigned char value){
 }
 
 void stepCA(CAPTR pointer, unsigned char (*func)(CAPTR, int), int wrapFlag){
-
+    CAPTR temp;
+    temp = create1DCA(pointer->numElements,0);
+    for(int i = 0; i < pointer->numElements; i++){
+        temp->arrayAddress[i]=func(pointer,i);
+    }
+    for(int i = 0; i < pointer->numElements; i++){
+        pointer->arrayAddress[i]=temp->arrayAddress[i];
+    }
+    free(temp);
 }

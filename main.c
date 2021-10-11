@@ -1,7 +1,41 @@
 #include "ca.h"
 
 unsigned char rule(CAPTR pointer, int index){
-    
+    unsigned char below;
+    unsigned char above;
+    if(strcmp(pointer->wrap,"wrap")==1){
+        below = pointer->arrayAddress[pointer->numElements-1];
+        above = pointer->arrayAddress[0];
+    }else{
+        if(pointer->qstate==-1){
+            below = rand()%pointer->numStates;
+            above = rand()%pointer->numStates;
+        }else{
+            below = pointer->qstate;
+            above = pointer->qstate;
+        }
+    }
+
+    unsigned char first;
+    unsigned char last;
+    unsigned char middle = pointer->arrayAddress[index];
+    if(index == 0){
+        first = below;
+        last = pointer->arrayAddress[index+1];
+    }else if(index == pointer->numElements-1){
+        first = pointer->arrayAddress[index-1];
+        last = above;
+    }else{
+        first = pointer->arrayAddress[index-1];
+        last = pointer->arrayAddress[index+1];
+    }
+
+    if((first && middle && last)||(first && !middle && !last)||(!first && !middle && !last)){
+        return 0;
+    }else{
+        return 1;
+    }
+
 }
 
 int main(int argc, char *argv[]){
@@ -31,10 +65,11 @@ int main(int argc, char *argv[]){
     }
 
     CAPTR p = create1DCA(atoi(argv[1]),0);
-    init1DCA(p,atoi(argv[4]));
     p->numStates=atoi(argv[2]);
+    init1DCA(p,atoi(argv[4]));
     p->qstate=atoi(argv[4]);
     p->wrap=argv[3];
+    display1DCA(p);
     for(int i = 0; i < atoi(argv[5]); i++){
         stepCA(p,rule,strcmp("wrap",argv[3])+1);
     }
