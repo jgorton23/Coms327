@@ -1,5 +1,16 @@
+/**
+ * Author: Jacob Gorton
+ * 
+ */
+
 #include "ca.h"
 
+/**
+ * a function that represents a simple rule as a transition function for simulating a CA
+ * 
+ * determines if the CA is a wrapping CA or not and applies the rule and to see what the next
+ * value for a given index should be
+ */
 unsigned char rule(CAPTR pointer, int index){
     unsigned char below;
     unsigned char above;
@@ -38,6 +49,10 @@ unsigned char rule(CAPTR pointer, int index){
 
 }
 
+/**
+ * a main function that does some error checking on some collected input, and then simulates 
+ * a CA with the given conditions
+ */
 int main(int argc, char *argv[]){
     if(argc!=6){
         printf("\nThe number of arguments passed was incorrect\n");
@@ -72,6 +87,7 @@ int main(int argc, char *argv[]){
     display1DCA(p);
     for(int i = 0; i < atoi(argv[5]); i++){
         stepCA(p,rule,strcmp("wrap",argv[3])+1);
+        display1DCA(p);
     }
     display1DCA(p);
 }

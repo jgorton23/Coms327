@@ -1,3 +1,13 @@
+/**
+ * Author: Jacob Gorton
+ * this file contains prototypes for functions that are used in ca.c
+ * and for a struct that represents a CA
+ * 
+ * It also contains 2 constants that represent the min and max values
+ * a user can input for the number of cells in a CA
+ */
+
+
 #ifndef CA
 #define CA
 #define MINIMUM_CELLS 10
