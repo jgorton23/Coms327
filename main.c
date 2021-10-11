@@ -89,6 +89,5 @@ int main(int argc, char *argv[]){
         stepCA(p,rule,strcmp("wrap",argv[3])+1);
         display1DCA(p);
     }
-    display1DCA(p);
 }
 
