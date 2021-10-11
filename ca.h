@@ -1,5 +1,7 @@
 #ifndef CA
 #define CA
+#define MINIMUM_CELLS 10
+#define MAXIMUM_CELLS 100
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -12,6 +14,7 @@ typedef struct ca_t{
     int numElements;
     int numStates;
     unsigned char qstate;
+    char* wrap;
 }ca_data;
 
 typedef struct ca_t* CAPTR;

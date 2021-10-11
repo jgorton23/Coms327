@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "ca.h"
+#define MINIMUM_CELLS 10
+#define MAXIMUM_CELLS 100
 
 void display1DCA(CAPTR pointer){
     int x = pointer->numElements;
@@ -40,16 +42,15 @@ CAPTR create1DCA(int size, unsigned char value){
     unsigned char *p=malloc(size*sizeof(unsigned char));
     CAPTR pointer = malloc(sizeof(ca_data));
     if(p==NULL || pointer==NULL){
-        return -1;
+        //return -1;
     }
     pointer->arrayAddress=p;
     pointer->numElements=size;
-    pointer->numStates=1;
     pointer->qstate=value;
     init1DCA(pointer,value);
     return pointer;
 }
 
 void stepCA(CAPTR pointer, unsigned char (*func)(CAPTR, int), int wrapFlag){
-    
+
 }
