@@ -20,23 +20,31 @@
 
 
 typedef struct ca_t{
-    unsigned char* arrayAddress;
-    int numElements;
+    unsigned char* cadata;
+    int width;
+    int height;
     int numStates;
     int qstate;
     char* wrap;
+    unsigned char dimension;
 }ca_data;
 
 typedef struct ca_t* CAPTR;
 
-void display1DCA(CAPTR pointer);
+void displayCA(CAPTR ca);
 
-int set1DCACell(CAPTR pointer, unsigned int index, unsigned char state);
+int set1DCACell(CAPTR ca, unsigned int x, unsigned char state);
 
-void init1DCA(CAPTR pointer, int numElements);
+int set2DCACell(CAPTR ca, unsigned int x, unsigned int y, unsigned char state);
 
-CAPTR create1DCA(int size, unsigned char value);
+void initCA(CAPTR ca, int state);
 
-void stepCA(CAPTR, unsigned char (*)(CAPTR, int), int);
+CAPTR create1DCA(int w, unsigned char qstate);
+
+CAPTR create2DCA(int w, int h, unsigned char qstate);
+
+void step1DCA(CAPTR, unsigned char (*)(CAPTR, int));
+
+void step2DCA(CAPTR, unsigned char (*)(CAPTR, int, int));
 
 #endif
