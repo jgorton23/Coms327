@@ -14,6 +14,7 @@ void displayCA(CAPTR ca){
     for (size_t i = 0; i < y; i++){
         for(int i = 0; i < x; i++){
             //printf("%u ", address[i]); this won't work for a 2DCA
+            //TODO
         }
     }
     printf("\n");
@@ -26,12 +27,16 @@ int set1DCACell(CAPTR ca, unsigned int index, unsigned char state){
     if(ca==NULL || index>=ca->width || state>=ca->numStates){
         return -1;
     }
-    ca->cadata[index]=state;
+    ca->cadata[index]=&state;
     return 0;
 }
 
 int set2DCACell(CAPTR ca, unsigned int col, unsigned int row, unsigned char state){
-
+    if(ca==NULL || index>=ca->width || state>=ca->numStates){
+        return -1;
+    }
+    ca->cadata[row][col]=state;
+    return 0;
 }
 
 /**
@@ -40,13 +45,30 @@ int set2DCACell(CAPTR ca, unsigned int col, unsigned int row, unsigned char stat
 void initCA(CAPTR ca, int value){
     srand(time(0));
     if(ca != NULL){
-        if(value >= 0){
-            for(int i = 0; i < ca->width; i++){
-                ca->cadata[i]=value;
+        if(ca->dimension == 1){
+            if(value >= 0){
+                for(int i = 0; i < ca->width; i++){
+                    ca->cadata[i]=&value;
+                }
+            }else{
+                for(int i = 0; i < ca->width; i++){
+                    int num = rand()%(ca->numStates);
+                    ca->cadata[i]= &num;
+                }
             }
-        }else{
-            for(int i = 0; i < ca->width; i++){
-                ca->cadata[i]=rand()%(ca->numStates);
+        }else if(ca->dimension == 2){
+            if(value >= 0){
+                for (int i = 0; i < ca->width; i++){
+                    for (int j = 0; i < ca->height; i++){
+                        ca->cadata[i][j]=value;
+                    }
+                }
+            }else{
+                for (int i = 0; i < ca->width; i++){
+                    for (int j = 0; i < ca->height; i++){
+                        ca->cadata[i][j]=rand()%(ca->numStates);
+                    }
+                }
             }
         }
     }
@@ -56,20 +78,38 @@ void initCA(CAPTR ca, int value){
  * function allocates memory sufficient to hold a struct with an array to represent a CA
  */
 CAPTR create1DCA(int width, unsigned char value){
-    unsigned char *p=malloc(width*sizeof(unsigned char));
+    unsigned char *p=malloc(width*sizeof(unsigned char *));
     CAPTR ca = malloc(sizeof(ca_data));
     if(p==NULL || ca==NULL){
-        //return -1;
+        return NULL;
     }
     ca->cadata=p;
     ca->width=width;
     ca->qstate=value;
-    init1DCA(ca,value);
+    ca->dimension=1;
+    initCA(ca,value);
     return ca;
 }
 
 CAPTR create2DCA(int width, int height, unsigned char value){
-
+    unsigned char *p = malloc(width*sizeof(unsigned char *));
+    CAPTR ca = malloc(sizeof(ca_data));
+    if(p==NULL || ca==NULL){
+        return NULL;
+    }else{
+        for(int i = 0; i < width; i++){
+            p[i]=malloc(height*sizeof(unsigned char));
+            if(p[i]==NULL){
+                return NULL;
+            }
+        }
+        ca->width = width;
+        ca->height = height;
+        ca->qstate = value;
+        ca->dimension = 2;
+        initCA(ca, value);
+        return ca;
+    }
 }
 
 /**
@@ -79,14 +119,33 @@ void step1DCA(CAPTR ca, unsigned char (*func)(CAPTR, int)){
     CAPTR temp;
     temp = create1DCA(ca->width,0);
     for(int i = 0; i < ca->width; i++){
-        temp->cadata[i]=func(ca,i);
+        int num = func(ca,i);
+        temp->cadata[i]=&num;
     }
     for(int i = 0; i < ca->width; i++){
         ca->cadata[i]=temp->cadata[i];
     }
+    free(temp->cadata);
     free(temp);
 }
 
 void step2DCA(CAPTR ca, unsigned char (*func)(CAPTR, int, int)){
-
+    CAPTR temp;
+    temp = create2DCA(ca->width, ca->height, 0);
+    for (int i = 0; i < ca->width; i++){
+        for (int j = 0; j < ca->height; j++){
+            temp->cadata[i][j]=func(ca,i,j);
+        }
+        
+    }
+    for (int i = 0; i < ca->width; i++){
+        for (int j = 0; j < ca->height; j++){
+            ca->cadata[i][j]=temp->cadata[i][j];
+        }
+    }
+    for (int i = 0; i < temp->width; i++){
+        free(temp->cadata[i]);
+    }
+    free(temp->cadata);
+    free(temp);
 }

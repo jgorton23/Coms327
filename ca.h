@@ -20,12 +20,12 @@
 
 
 typedef struct ca_t{
-    unsigned char* cadata;
+    unsigned char** cadata;
     int width;
     int height;
     int numStates;
     int qstate;
-    char* wrap;
+    unsigned char wrap;
     unsigned char dimension;
 }ca_data;
 
