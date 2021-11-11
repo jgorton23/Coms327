@@ -1,7 +1,7 @@
 /**
  * Author: Jacob Gorton
  * this file contains prototypes for functions that are used in ca.c
- * and for a struct that represents a CA
+ * and for a struct that represents a 1D or 2D CA
  * 
  * It also contains 2 constants that represent the min and max values
  * a user can input for the number of cells in a CA

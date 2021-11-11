@@ -29,7 +29,12 @@ void displayCA(CAPTR ca){
 }
 
 /**
- * a function to change the value of a certain array index in a given struct representing a 1DCA
+ * @brief a function to change the value of a certain array index in a given struct representing a 1DCA
+ * 
+ * @param ca 
+ * @param index 
+ * @param state 
+ * @return int 
  */
 int set1DCACell(CAPTR ca, unsigned int index, unsigned char state){
     if(ca==NULL || index>=ca->width){ // || state>=ca->numStates
@@ -39,8 +44,17 @@ int set1DCACell(CAPTR ca, unsigned int index, unsigned char state){
     return 0;
 }
 
+/**
+ * @brief a function to set a given coordinate in a 2D CA to a specified value
+ * 
+ * @param ca 
+ * @param row 
+ * @param col 
+ * @param state 
+ * @return int 
+ */
 int set2DCACell(CAPTR ca, unsigned int row, unsigned int col, unsigned char state){
-    if(ca==NULL || col>=ca->width || row>=ca->height){ // || state>=ca->numStates from last time, idt we need it anymore
+    if(ca==NULL || col>=ca->width || row>=ca->height){ 
         return -1;
     }
     ca->cadata[col][row]=state;
@@ -48,7 +62,10 @@ int set2DCACell(CAPTR ca, unsigned int row, unsigned int col, unsigned char stat
 }
 
 /**
- * initializes the values of the array in a struct to the given value, or a random value if the given value is -1
+ * @brief initializes the values of the 1D or 2D array in a struct to the given value, or a random value if the given value is -1
+ * 
+ * @param ca 
+ * @param value 
  */
 void initCA(CAPTR ca, int value){
     srand(time(0));
@@ -83,9 +100,12 @@ void initCA(CAPTR ca, int value){
     }
 }
 
-
 /**
- * function allocates memory sufficient to hold a struct with an array to represent a CA
+ * @brief function allocates memory sufficient to hold a struct with an array to represent a 1DCA
+ * 
+ * @param width 
+ * @param value 
+ * @return CAPTR 
  */
 CAPTR create1DCA(int width, unsigned char value){
     unsigned char **p=malloc(width*sizeof(unsigned char **));
@@ -101,6 +121,14 @@ CAPTR create1DCA(int width, unsigned char value){
     return ca;
 }
 
+/**
+ * @brief function allocates memory sufficient to hold a struct with an array to represent a 1DCA
+ * 
+ * @param width 
+ * @param height 
+ * @param value 
+ * @return CAPTR 
+ */
 CAPTR create2DCA(int width, int height, unsigned char value){
     unsigned char **p = (unsigned char **)malloc(width*sizeof(unsigned char *));
     CAPTR ca = malloc(sizeof(ca_data));
@@ -124,7 +152,10 @@ CAPTR create2DCA(int width, int height, unsigned char value){
 }
 
 /**
- * applies a given function to a given CA and updates the given CA to the next value for each cell
+ * @brief applies a given function to a given 1DCA and updates the given CA to the next value for each cell
+ * 
+ * @param ca 
+ * @param func 
  */
 void step1DCA(CAPTR ca, unsigned char (*func)(CAPTR, int)){
     CAPTR temp;
@@ -140,6 +171,12 @@ void step1DCA(CAPTR ca, unsigned char (*func)(CAPTR, int)){
     free(temp);
 }
 
+/**
+ * @brief applies a given function to a given 2DCA and updates the given CA to the next value for each cell
+ * 
+ * @param ca 
+ * @param func 
+ */
 void step2DCA(CAPTR ca, unsigned char (*func)(CAPTR, int, int)){
     CAPTR temp;
     temp = create2DCA(ca->width, ca->height, 0);

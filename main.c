@@ -5,11 +5,18 @@
 
 #include "ca.h"
 
+
 /**
- * a function that represents a simple rule as a transition function for simulating a CA
+ * @brief 
+ * a function that represents a simple rule as a transition function for simulating a 2DCA
  * 
  * determines if the CA is a wrapping CA or not and applies the rule and to see what the next
  * value for a given index should be
+ * 
+ * @param pointer 
+ * @param col 
+ * @param row 
+ * @return unsigned char 
  */
 unsigned char rule(CAPTR pointer, int col, int row){
 
@@ -40,8 +47,12 @@ unsigned char rule(CAPTR pointer, int col, int row){
 }
 
 /**
- * a main function that does some error checking on some collected input, and then simulates 
- * a CA with the given conditions
+ * @brief a main function that does some error checking on some collected input, and then simulates 
+ * a 2DCA with the given conditions read from a file
+ * 
+ * @param argc 
+ * @param argv 
+ * @return int 
  */
 int main(int argc, char *argv[]){
 
