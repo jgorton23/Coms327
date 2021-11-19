@@ -1,5 +1,5 @@
 #ifndef GRAPHICS_CLIENT_H
-#define GRAPHICE_CLIENT_H
+#define GRAPHICS_CLIENT_H
 
 #include <string>
 using namespace std;

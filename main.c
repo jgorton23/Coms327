@@ -2,7 +2,6 @@
  * Author: Jacob Gorton
  * 
  */
-
 #include "ca.h"
 
 
