@@ -136,24 +136,18 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
         cellSize=10;
         gapSize=4;
     }
-    window.setBackgroundColor(155,0,255);
-    window.clear();//clear is necessary for setBackground color, but stops drawRectangle from doing anything*
+    window.setBackgroundColor(255,255,255);
+    window.clear();
     window.repaint();
-    window.setDrawingColor(0,255,0);
-    window.drawRectangle(10,10,100,100);
-    window.setDrawingColor(63,181,47);
-    window.clearRectangle(10,10,50,50);
-    window.fillRectangle(100,100,100,100);
-    window.clearRectangle(100,100,10,10);
-    for(int i = 0; i < 10; i++){
-        for(int j = 0; j < 10; j++){
-            //window.setPixel(250+i,250+j,0,255,255);
-            //TODO currently setPixel (or at the least this for loop) is setting the background color to black
+    window.setDrawingColor(0,0,0);
+    for(int i = 0; i < height; i++){
+        for(int j = 0; j < width; j++){
+            if(cadata[j][i]==48){ //use 48 bc 48 is what 0 is represented as
+                //window.drawRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+            }else{
+                window.fillRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+            }
         }
     }
-    //window.repaint();
-    window.fillOval(300,300,100,50);
-    window.drawLine(0,0,600,600);
-    window.clearRectangle(110,110,80,80);
-    window.drawString(300,300,"Hello");
+    window.repaint();
 }

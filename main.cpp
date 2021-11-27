@@ -38,14 +38,12 @@ int main(){
     CellularAutomaton ca = CellularAutomaton("glider.txt", 0);
     GraphicsClient gc = GraphicsClient("127.0.0.1",7777);
     ca.displayCA(gc);
-    //gc.repaint();
-    //ca.displayCA(gc);
-    // while(1){
-    //     if(getchar()=='\n'){
-    //         ca.Step(rule);
-    //         ca.displayCA(gc);
-    //     }else{
-    //         return 1;
-    //     }
-    // }
+    while(1){
+        if(getchar()=='\n'){
+            ca.Step(rule);
+            ca.displayCA(gc);
+        }else{
+            return 1;
+        }
+    }
 }
