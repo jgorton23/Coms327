@@ -13,19 +13,14 @@ using namespace std;
  */
 CellularAutomaton::CellularAutomaton(std::string file, int qstate){
     this->qstate = qstate;
-    cout << "qstate: " << qstate << "\n";
-    wrap=1; //change this value to change if the rule wraps or not (1/0 respectively)
     ifstream f(file);
     if(!f.is_open()){
         cout << "Error opening file";
         exit(-1);
     }
     f >> height;
-    cout << "height: " << height << "\n";
     f >> width;
-    cout << "width: " << width << "\n";
     m = width>height?width:height;
-    cout <<"m: " << m << "\n";
     //allocate memory for the 2D array
     cadata = (unsigned char **)malloc(width*sizeof(unsigned char*));
     if(cadata == NULL){
@@ -57,7 +52,21 @@ CellularAutomaton::CellularAutomaton(const CellularAutomaton &other){
     width = other.width;
     height = other.height;
     qstate = other.qstate;
+    m=other.m;
     wrap = other.wrap;
+    cadata = (unsigned char**)malloc(width*sizeof(unsigned char*));
+    if(cadata==NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+        for(int i = 0; i < width; i++){
+            cadata[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(cadata[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
     for (int i = 0; i < width; i++){
         for (int j = 0; j < height; j++){
             cadata[i][j] = other.cadata[i][j];
@@ -87,6 +96,7 @@ CellularAutomaton CellularAutomaton::operator=(const CellularAutomaton &rhs){
  */
 CellularAutomaton::~CellularAutomaton(){
     delete cadata;
+    //TODO review destructor
 }
 
 /**
@@ -94,8 +104,16 @@ CellularAutomaton::~CellularAutomaton(){
  * 
  * @param rule a rule to simulate a step of the CA
  */
-void CellularAutomaton::Step(unsigned char (* rule)(int, int)){
-
+void CellularAutomaton::Step(unsigned char (* rule)(unsigned char, unsigned char**, int, int, int, int)){
+    CellularAutomaton temp(*this);
+    unsigned char result;
+    for(int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            result = rule(wrap, cadata, j,i,width,height);
+            temp.cadata[j][i]=result;
+        }
+    }
+    swap(cadata, temp.cadata);
 }
 
 /**
@@ -103,12 +121,22 @@ void CellularAutomaton::Step(unsigned char (* rule)(int, int)){
  * 
  * @param window the window on which to display the 2DCA
  */
-void CellularAutomaton::Display(){ //GraphicsClient &window
-    for (int j = 0; j < height; j++){
-        for (int i = 0; i < width; i++){
-            cout << cadata[i][j];
-            cout << " ";
-        }
-        cout << "\n";
+void CellularAutomaton::displayCA(GraphicsClient &window){
+    int cellSize, gapSize;
+    if(m>200){
+        cellSize=1;
+        gapSize=0;
+    }else if(m>100){
+        cellSize=2;
+        gapSize=1;
+    }else if(m>50){
+        cellSize=4;
+        gapSize=1;
+    }else if(m>1){
+        cellSize=10;
+        gapSize=4;
     }
+    window.setBackgroundColor(255,0,255);
+    window.clear();
+    window.repaint();
 }

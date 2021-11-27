@@ -10,13 +10,13 @@ class CellularAutomaton{
         CellularAutomaton(std::string file, int qstate);
         CellularAutomaton(const CellularAutomaton &other);
         CellularAutomaton operator=(const CellularAutomaton &rhs);
-        void Step(unsigned char (*)(int, int)); //unsure about rule format, here it is the same as last time but without the pointer parameter, since it is an object method
-        void Display(); //GraphicsClient &window
+        void Step(unsigned char (*)(unsigned char, unsigned char**, int, int, int, int));
+        void displayCA(GraphicsClient &window);
         ~CellularAutomaton();
     private:
         int width, height, m, qstate;
         unsigned char** cadata;
-        unsigned char wrap;
+        unsigned char wrap = 1; //edit depending on if a CA should wrap or not, (1,0 respectively)
 };
 
 #endif
