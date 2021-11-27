@@ -105,8 +105,13 @@ void GraphicsClient::setDrawingColor(int r, int g, int b){
     message[1]=message[2]=message[3]=0x00;
     message[4]=0x07;
     message[5]=0x06;
-    //TODO convert 3 ints to char array
-    send(sockfd, message, 18, 0);
+    message[6]=shift(r)&0x0F;
+    message[7]=r&0x0F;
+    message[8]=shift(g)&0x0F;
+    message[9]=g&0x0F;
+    message[10]=shift(b)&0x0F;
+    message[11]=b&0x0F;
+    send(sockfd, message, 12, 0);
 }
 
 /**
@@ -135,10 +140,24 @@ void GraphicsClient::setPixel(int x, int y, int r, int g, int b){
     char message[100];
     message[0]=0xFF;
     message[1]=message[2]=message[3]=0x00;
-    message[4]=0x0E;
+    message[4]=0x0F;
     message[5]=0x02;
-    //TODO convert ints to char array
-    send(sockfd, message, 18, 0);
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    message[14]=shift(r)&0x0F;
+    message[15]=r&0x0F;
+    message[16]=shift(g)&0x0F;
+    message[17]=g&0x0F;
+    message[18]=shift(b)&0x0F;
+    message[19]=b&0x0F;
+    send(sockfd, message, 20, 0);
+    //TODO figure out what doesnt work
 }
 
 /**
@@ -156,7 +175,22 @@ void GraphicsClient::drawRectangle(int x, int y, int width, int height){
     message[3]=0x01;
     message[4]=0x01;
     message[5]=0x07;
-    //TODO fill in char array
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    message[14]=shift(shift(shift(width)))&0x0F;
+    message[15]=shift(shift(width))&0x0F;
+    message[16]=shift(width)&0x0F;
+    message[17]=width&0x0F;
+    message[18]=shift(shift(shift(height)))&0x0F;
+    message[19]=shift(shift(height))&0x0F;
+    message[20]=shift(height)&0x0F;
+    message[21]=height&0x0F;
     send(sockfd, message, 22, 0);
 }
 
@@ -175,7 +209,22 @@ void GraphicsClient::fillRectangle(int x, int y, int width, int height){
     message[3]=0x01;
     message[4]=0x01;
     message[5]=0x08;
-    //TODO fill in char array
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    message[14]=shift(shift(shift(width)))&0x0F;
+    message[15]=shift(shift(width))&0x0F;
+    message[16]=shift(width)&0x0F;
+    message[17]=width&0x0F;
+    message[18]=shift(shift(shift(height)))&0x0F;
+    message[19]=shift(shift(height))&0x0F;
+    message[20]=shift(height)&0x0F;
+    message[21]=height&0x0F;
     send(sockfd, message, 22, 0);
 }
 
@@ -194,7 +243,22 @@ void GraphicsClient::clearRectangle(int x, int y, int width, int height){
     message[3]=0x01;
     message[4]=0x01;
     message[5]=0x09;
-    //TODO fill in char array
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    message[14]=shift(shift(shift(width)))&0x0F;
+    message[15]=shift(shift(width))&0x0F;
+    message[16]=shift(width)&0x0F;
+    message[17]=width&0x0F;
+    message[18]=shift(shift(shift(height)))&0x0F;
+    message[19]=shift(shift(height))&0x0F;
+    message[20]=shift(height)&0x0F;
+    message[21]=height&0x0F;    
     send(sockfd, message, 22, 0);
 }
 
@@ -213,7 +277,22 @@ void GraphicsClient::drawOval(int x, int y, int width, int height){
     message[3]=0x01;
     message[4]=0x01;
     message[5]=0x0a;
-    //TODO fill in char array
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    message[14]=shift(shift(shift(width)))&0x0F;
+    message[15]=shift(shift(width))&0x0F;
+    message[16]=shift(width)&0x0F;
+    message[17]=width&0x0F;
+    message[18]=shift(shift(shift(height)))&0x0F;
+    message[19]=shift(shift(height))&0x0F;
+    message[20]=shift(height)&0x0F;
+    message[21]=height&0x0F; 
     send(sockfd, message, 22, 0);
 }
 
@@ -232,7 +311,22 @@ void GraphicsClient::fillOval(int x, int y, int width, int height){
     message[3]=0x01;
     message[4]=0x01;
     message[5]=0x0b;
-    //TODO fill in char array
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    message[14]=shift(shift(shift(width)))&0x0F;
+    message[15]=shift(shift(width))&0x0F;
+    message[16]=shift(width)&0x0F;
+    message[17]=width&0x0F;
+    message[18]=shift(shift(shift(height)))&0x0F;
+    message[19]=shift(shift(height))&0x0F;
+    message[20]=shift(height)&0x0F;
+    message[21]=height&0x0F; 
     send(sockfd, message, 22, 0);
 }
 
@@ -251,7 +345,22 @@ void GraphicsClient::drawLine(int x1, int y1, int x2, int y2){
     message[3]=0x01;
     message[4]=0x01;
     message[5]=0x0D;
-    //TODO fill in char array
+    message[6]=shift(shift(shift(x1)))&0x0F;
+    message[7]=shift(shift(x1))&0x0F;
+    message[8]=shift(x1)&0x0F;
+    message[9]=x1&0x0F;
+    message[10]=shift(shift(shift(y1)))&0x0F;
+    message[11]=shift(shift(y1))&0x0F;
+    message[12]=shift(y1)&0x0F;
+    message[13]=y1&0x0F;
+    message[14]=shift(shift(shift(x2)))&0x0F;
+    message[15]=shift(shift(x2))&0x0F;
+    message[16]=shift(x2)&0x0F;
+    message[17]=x2&0x0F;
+    message[18]=shift(shift(shift(y2)))&0x0F;
+    message[19]=shift(shift(y2))&0x0F;
+    message[20]=shift(y2)&0x0F;
+    message[21]=y2&0x0F;     
     send(sockfd, message, 22, 0);
 }
 
@@ -266,10 +375,26 @@ void GraphicsClient::drawString(int x, int y, string s){
     char message[100];
     message[0]=0xFF;
     int length = strlen(s.c_str());
-    //message[1]-message[4]= length converted to char array
+    int nibbles = length*2 + 9;
+    message[1]=shift(shift(shift(nibbles)))&0x0F;
+    message[2]=shift(shift(nibbles))&0x0F;
+    message[3]=shift(nibbles)&0x0F;
+    message[4]=nibbles&0x0F;
     message[5]=0x05;
-    //TODO fill in x, y coordinates, string char nibbles
-    send(sockfd, message, length*2+10, 0);
+    message[6]=shift(shift(shift(x)))&0x0F;
+    message[7]=shift(shift(x))&0x0F;
+    message[8]=shift(x)&0x0F;
+    message[9]=x&0x0F;
+    message[10]=shift(shift(shift(y)))&0x0F;
+    message[11]=shift(shift(y))&0x0F;
+    message[12]=shift(y)&0x0F;
+    message[13]=y&0x0F;
+    int i = 0;
+    while(i<length*2){
+        message[i+14]=i%2==0?shift(s.c_str()[i/2])&0x0F:s.c_str()[i/2]&0x0F;
+        i++;
+    }
+    send(sockfd, message, length*2+14, 0);
 }
 
 /**
