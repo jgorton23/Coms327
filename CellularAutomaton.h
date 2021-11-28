@@ -16,7 +16,7 @@ class CellularAutomaton{
     private:
         int width, height, m, qstate;
         unsigned char** cadata;
-        unsigned char wrap; //edit depending on if a CA should wrap or not, (1,0 respectively)
+        unsigned char wrap;
 };
 
 #endif

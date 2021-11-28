@@ -76,6 +76,7 @@ GraphicsClient GraphicsClient::operator=(const GraphicsClient &rhs){
  */
 GraphicsClient::~GraphicsClient(){
     close(sockfd);
+    //TODO review destructor
 }
 
 /**
