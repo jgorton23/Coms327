@@ -13,6 +13,7 @@ using namespace std;
  */
 CellularAutomaton::CellularAutomaton(std::string file, int qstate){
     this->qstate = qstate;
+    wrap = 1;
     ifstream f(file);
     if(!f.is_open()){
         cout << "Error opening file";
@@ -104,12 +105,12 @@ CellularAutomaton::~CellularAutomaton(){
  * 
  * @param rule a rule to simulate a step of the CA
  */
-void CellularAutomaton::Step(unsigned char (* rule)(unsigned char, unsigned char**, int, int, int, int)){
+void CellularAutomaton::Step(unsigned char (* rule)(unsigned char, unsigned char**, int, int, int, int, int)){
     CellularAutomaton temp(*this);
     unsigned char result;
     for(int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
-            result = rule(wrap, cadata, j,i,width,height);
+            result = rule(wrap, cadata, j,i,width,height,qstate);
             temp.cadata[j][i]=result;
         }
     }

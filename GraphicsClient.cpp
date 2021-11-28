@@ -19,16 +19,18 @@ using namespace std;
  */
 GraphicsClient::GraphicsClient(std::string url, int port){
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    server_url=url;
+    server_port=port;
     if (sockfd < 0){
         fprintf( stderr, "Error creating socket\n");
         exit(-1);
     }
 
     struct sockaddr_in serv_addr;
-    memset(&serv_addr, '0', sizeof(url.c_str()));
+    memset(&serv_addr, '0', sizeof(server_url.c_str()));
 
     serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(port);
+    serv_addr.sin_port = htons(server_port);
 
     if(inet_pton(AF_INET, url.c_str(), &serv_addr.sin_addr)<=0){
         fprintf(stderr, "Invalid address/ Address not supported \n");
@@ -47,7 +49,15 @@ GraphicsClient::GraphicsClient(std::string url, int port){
  * @param other the Graphics client to copy
  */
 GraphicsClient::GraphicsClient(const GraphicsClient &other){
+    sockfd=other.sockfd;
+    server_url=other.server_url;
+    server_port=other.server_port;
 
+    struct sockaddr_in serv_addr;
+    memset(&serv_addr, '0', sizeof(server_url.c_str()));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(server_port);
 }
 
 /**
