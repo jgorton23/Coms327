@@ -1,3 +1,3 @@
 main.o:
-	gcc main.c ca.c ca.h
+	g++ -o a.out main.cpp
 	mv a.out gol
