@@ -67,7 +67,11 @@ GraphicsClient::GraphicsClient(const GraphicsClient &other){
  * @return GraphicsClient 
  */
 GraphicsClient GraphicsClient::operator=(const GraphicsClient &rhs){
-    //TODO write assignment =
+    GraphicsClient temp(rhs);
+    std::swap(sockfd, temp.sockfd);
+    std::swap(server_url, temp.server_url);
+    std::swap(server_port, temp.server_port);
+    return *this;
 }
 
 /**
@@ -76,7 +80,6 @@ GraphicsClient GraphicsClient::operator=(const GraphicsClient &rhs){
  */
 GraphicsClient::~GraphicsClient(){
     close(sockfd);
-    //TODO review destructor
 }
 
 /**

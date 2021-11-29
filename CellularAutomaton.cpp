@@ -42,6 +42,7 @@ CellularAutomaton::CellularAutomaton(std::string file, int qstate){
             f >> cadata[j][i];
         }
     }
+    f.close();
 }
 
 /**
@@ -96,8 +97,10 @@ CellularAutomaton CellularAutomaton::operator=(const CellularAutomaton &rhs){
  * 
  */
 CellularAutomaton::~CellularAutomaton(){
+    for(int i = 0; i < width; i++){
+        delete cadata[i];
+    }
     delete cadata;
-    //TODO review destructor
 }
 
 /**
@@ -143,10 +146,17 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
     window.setDrawingColor(0,0,0);
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
-            if(cadata[j][i]==48){ //use 48 bc 48 is what 0 is represented as
-                //window.drawRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+            if(m<=50){
+                if(cadata[j][i]==48){ //use 48 bc 48 is what 0 is represented as
+                    window.drawRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+                }else{
+                    window.fillRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+                }
             }else{
-                window.fillRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+                if(cadata[j][i]!=48){
+                    //window.setPixel(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),0,0,0);
+                    window.fillRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+                }
             }
         }
     }
