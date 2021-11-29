@@ -1,10 +1,9 @@
-# Project 1 - Part C
+# Project 2 - Part A
 
 ## Features Implemented
-This program will simulate a 2D CA given a file to read initial conditions from and a transition function
+This program will read in a 2DCA from a file and simulate steps according to Conway's game of life every time the user presses enter, until a different character is typed.
 
-It requires command line input for 
-- number of dimensions of the CA
+It requires a command line input for 
 - file path to initilizer file
 
 
@@ -14,5 +13,5 @@ To run the program make sure you are in the base project directory,
 type `make` in the terminal,
 then type 
 
-`./gol 2 <path/to/relevant/file>` 
+`./gol <path/to/relevant/file>` 
 

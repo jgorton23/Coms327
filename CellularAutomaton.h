@@ -5,6 +5,10 @@
 #include "GraphicsClient.h"
 using namespace std;
 
+/**
+ * @brief class declaration for the CellularAutomaton object
+ * 
+ */
 class CellularAutomaton{
     public:
         CellularAutomaton(std::string file, int qstate);

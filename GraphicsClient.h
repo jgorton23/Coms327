@@ -11,6 +11,10 @@
 #include <unistd.h>
 using namespace std;
 
+/**
+ * @brief class declaration for the GraphicsClient opject
+ * 
+ */
 class GraphicsClient{
     public:
         GraphicsClient(std::string, int);
