@@ -33,10 +33,12 @@ class GraphicsClient{
         void drawLine(int, int, int, int);
         void drawString(int, int, string);
         void repaint();
+        void getClick(); //test method
     private:
         int sockfd;
         string server_url;
         int server_port;
+        int numClicks;//test variable
 };
 
 #endif

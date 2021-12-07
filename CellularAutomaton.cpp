@@ -140,10 +140,22 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
         cellSize=10;
         gapSize=4;
     }
-    window.setBackgroundColor(255,255,255);
+    //window.setBackgroundColor(255,255,255);
     window.clear();
     window.repaint();
-    window.setDrawingColor(0,0,0);
+    window.setDrawingColor(255,255,255);
+    //DRAW BUTTONS
+    window.drawLine(600,0,600,600);
+    window.drawRectangle(650,20,100,50);
+    window.drawRectangle(650,90,100,50);
+    window.drawRectangle(650,160,100,50);
+    window.drawRectangle(650,220,100,50);
+    window.drawRectangle(650,290,100,50);
+    window.drawRectangle(650,360,100,50);
+    window.drawRectangle(650,430,100,50);
+    window.drawRectangle(650,500,100,50);
+    
+    //DRAW CELLS
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if(m<=50){
@@ -160,5 +172,10 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
             }
         }
     }
+
+    //GET MOUSE INPUT
+    //window.drawString(700,35,"0");
+    window.getClick();
+
     window.repaint();
 }

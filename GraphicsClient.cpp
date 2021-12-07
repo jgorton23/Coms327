@@ -8,6 +8,10 @@ using namespace std;
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <sstream>
+#include <iostream>
+
 
 #define shift(x) x>>4
 
@@ -18,6 +22,7 @@ using namespace std;
  * @param port the port number to connect
  */
 GraphicsClient::GraphicsClient(std::string url, int port){
+    numClicks=0;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     server_url=url;
     server_port=port;
@@ -41,6 +46,22 @@ GraphicsClient::GraphicsClient(std::string url, int port){
         fprintf(stderr, "Connection Failed \n");
         exit(-1);
     }
+}
+
+//TEST MOUSE METHOD
+void GraphicsClient::getClick(){
+    int count;
+    ioctl(sockfd, FIONREAD, &count);
+    if(count==10){
+        numClicks+=1;
+    }
+    stringstream ss;
+    ss << numClicks;
+    string myString = ss.str();
+    cout << numClicks;
+    drawString(700,35,myString);
+    //clear();
+    repaint();
 }
 
 /**
