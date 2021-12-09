@@ -48,18 +48,27 @@ GraphicsClient::GraphicsClient(std::string url, int port){
     }
 }
 
-//TEST MOUSE METHOD
-void GraphicsClient::getClick(){
+int GraphicsClient::getBytesReady(){
     int count;
     ioctl(sockfd, FIONREAD, &count);
-    if(count==10){
-        numClicks+=1;
-    }
-    stringstream ss;
-    ss << numClicks;
-    string myString = ss.str();
-    cout << numClicks;
-    drawString(700,35,myString);
+    return count;
+}
+
+int GraphicsClient::getNumClicks(){
+    return numClicks;
+}
+
+//TEST MOUSE METHOD
+void GraphicsClient::getClick(){
+    char buf[10];
+    read(sockfd, buf, 10);
+    numClicks++;
+    
+    // stringstream ss;
+    // ss << numClicks;
+    // string myString = ss.str();
+    // cout << numClicks;
+    // drawString(700,35,myString);
     //clear();
     repaint();
 }

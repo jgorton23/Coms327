@@ -4,6 +4,8 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 #include "CellularAutomaton.h"
+#include <sstream>
+#include <iostream>
 
 /**
  * @brief Construct a new Cellular Automaton:: Cellular Automaton object
@@ -175,7 +177,19 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
 
     //GET MOUSE INPUT
     //window.drawString(700,35,"0");
-    window.getClick();
+    stringstream ss2;
+    ss2 << window.getBytesReady();
+    string s2 = ss2.str();
+    window.drawString(700,110,s2);
+
+    //window.getBytesReady();
+    if(window.getBytesReady()>0){
+        window.getClick();
+    }
+    stringstream ss;
+    ss << window.getNumClicks();
+    string s = ss.str();
+    window.drawString(700,35,s);
 
     window.repaint();
 }

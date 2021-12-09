@@ -34,6 +34,8 @@ class GraphicsClient{
         void drawString(int, int, string);
         void repaint();
         void getClick(); //test method
+        int getBytesReady();
+        int getNumClicks();
     private:
         int sockfd;
         string server_url;
