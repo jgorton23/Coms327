@@ -66,12 +66,7 @@ unsigned char rule(unsigned char wrap, unsigned char** data, int x, int y, int w
 }
 
 int main(int argc, char *argv[]){
-    // if(argc!=2){
-    //     cout << "incorrect number of arguments";
-    //     return -1;
-    // }
-    //string file = argv[1];
-    string file = "tests/blinker.txt";
+    string file = "tests/test.txt"; //TODO
     CellularAutomaton ca = CellularAutomaton(file, 0);
     GraphicsClient gc = GraphicsClient("127.0.0.1",7777);
     ca.displayCA(gc);
@@ -79,13 +74,14 @@ int main(int argc, char *argv[]){
     timespec* rem = (timespec *)malloc(sizeof(timespec));
     req->tv_sec=1;
     //req->tv_nsec=1000000000;
-    while(1){
-        //if(getchar()=='\n'){
-            nanosleep(req,rem);
+    while(1 && gc.isRunning()){
+        nanosleep(req,rem);
+        if(gc.getBytesReady()>0){
+            gc.getClick();
+        }
+        if(!gc.isPaused()){
             ca.Step(rule);
             ca.displayCA(gc);
-        // }else{
-        //     return 1;
-        // }
+        }
     }
 }

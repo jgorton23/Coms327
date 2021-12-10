@@ -149,13 +149,21 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
     //DRAW BUTTONS
     window.drawLine(600,0,600,600);
     window.drawRectangle(650,20,100,50);
+    window.drawString(675,40, "step");
     window.drawRectangle(650,90,100,50);
+    window.drawString(675,110, "run");
     window.drawRectangle(650,160,100,50);
+    window.drawString(675,180, "pause");
     window.drawRectangle(650,220,100,50);
+    window.drawString(675,240, "reset");
     window.drawRectangle(650,290,100,50);
+    window.drawString(675,310, "random");
     window.drawRectangle(650,360,100,50);
+    window.drawString(675,380, "load");
     window.drawRectangle(650,430,100,50);
+    window.drawString(675,450, "clear");
     window.drawRectangle(650,500,100,50);
+    window.drawString(675,520, "quit");
     
     //DRAW CELLS
     for(int i = 0; i < height; i++){
@@ -175,21 +183,21 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
         }
     }
 
-    //GET MOUSE INPUT
+    //GET MOUSE INPUT MOVING TO MAIN METHOD
     //window.drawString(700,35,"0");
-    stringstream ss2;
-    ss2 << window.getBytesReady();
-    string s2 = ss2.str();
-    window.drawString(700,110,s2);
+    // stringstream ss2;
+    // ss2 << window.getBytesReady();
+    // string s2 = ss2.str();
+    // window.drawString(700,110,s2);
 
     //window.getBytesReady();
-    if(window.getBytesReady()>0){
-        window.getClick();
-    }
-    stringstream ss;
-    ss << window.getNumClicks();
-    string s = ss.str();
-    window.drawString(700,35,s);
+    // if(window.getBytesReady()>0){
+    //     window.getClick();
+    // }
+    // stringstream ss;
+    // ss << window.getNumClicks();
+    // string s = ss.str();
+    // window.drawString(700,35,s);
 
     window.repaint();
 }

@@ -36,7 +36,13 @@ class GraphicsClient{
         void getClick(); //test method
         int getBytesReady();
         int getNumClicks();
+        int isPaused();
+        int isRunning();
+        void pause();
+        void quit();
     private:
+        int running;
+        int paused;
         int sockfd;
         string server_url;
         int server_port;

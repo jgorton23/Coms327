@@ -23,6 +23,8 @@ using namespace std;
  */
 GraphicsClient::GraphicsClient(std::string url, int port){
     numClicks=0;
+    paused=1;
+    running=1;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
     server_url=url;
     server_port=port;
@@ -48,6 +50,22 @@ GraphicsClient::GraphicsClient(std::string url, int port){
     }
 }
 
+int GraphicsClient::isPaused(){
+    return paused;
+}
+
+void GraphicsClient::pause(){
+    paused=(paused+1)%2;
+}
+
+int GraphicsClient::isRunning(){
+    return running;
+}
+
+void GraphicsClient::quit(){
+    running=0;
+}
+
 int GraphicsClient::getBytesReady(){
     int count;
     ioctl(sockfd, FIONREAD, &count);
@@ -60,17 +78,10 @@ int GraphicsClient::getNumClicks(){
 
 //TEST MOUSE METHOD
 void GraphicsClient::getClick(){
-    char buf[10];
-    read(sockfd, buf, 10);
+    char buf[100];
+    read(sockfd, buf, 45);
     numClicks++;
-    
-    // stringstream ss;
-    // ss << numClicks;
-    // string myString = ss.str();
-    // cout << numClicks;
-    // drawString(700,35,myString);
-    //clear();
-    repaint();
+    pause();
 }
 
 /**
