@@ -33,9 +33,8 @@ class GraphicsClient{
         void drawLine(int, int, int, int);
         void drawString(int, int, string);
         void repaint();
-        void getBytes(char *); //test method
+        void getBytes(char *);
         int getBytesReady();
-        int getNumClicks();
         int isPaused();
         int isRunning();
         void pause();

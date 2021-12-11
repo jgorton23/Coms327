@@ -22,7 +22,6 @@ using namespace std;
  * @param port the port number to connect
  */
 GraphicsClient::GraphicsClient(std::string url, int port){
-    numClicks=0;
     paused=1;
     running=1;
     sockfd = socket(AF_INET, SOCK_STREAM, 0);
@@ -83,10 +82,6 @@ int GraphicsClient::getBytesReady(){
     int count;
     ioctl(sockfd, FIONREAD, &count);
     return count;
-}
-
-int GraphicsClient::getNumClicks(){
-    return numClicks;
 }
 
 void GraphicsClient::getBytes(char * buf){

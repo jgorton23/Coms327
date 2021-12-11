@@ -1,17 +1,15 @@
-# Project 2 - Part A
+# Project 2 - Part B
 
 ## Features Implemented
-This program will read in a 2DCA from a file and simulate steps according to Conway's game of life every time the user presses enter, until a different character is typed.
+This program simulates a CA according to Conway's Game of Life. 
 
-It requires a command line input for 
-- file path to initilizer file
+The user has the option to simulate a random CA of 3 sizes, allowing pausing, resuming, clearing, randomizing, and single step functionality.
 
-
-It will print the current state of the CA after each transition, and run a new transition each time the user presses enter
+Alternatively the user can load a file from their computer using an explorer, up to 600 cells wide or tall, and have it be simulated.
 ## How to Execute the Program
 To run the program make sure you are in the base project directory, 
 type `make` in the terminal,
-then type 
+then type `./gol`
 
-`./gol <path/to/relevant/file>` 
+Then the user can use on-screen buttons to control the actions.
 
