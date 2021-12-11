@@ -98,10 +98,13 @@ int GraphicsClient::click(char * buf){
     int y = ((lshift(lshift(lshift(buf[11]))))+(lshift(lshift(buf[12])))+(lshift(buf[13]))+ buf[14]);
     if(x>650 && x<750 && y>160 && y<210){
         pause();
+        return 0;
     }else if(x>650 && x<750 && y>90 && y<140){
         play();
+        return 0;
     }else if(x>650 && x<750 && y>500 && y<550){
         quit();
+        return 0;
     }else if(x>650 && x<750 && y>430 && y<480){
         return 1;
     }else if(x>650 && x<750 && y>290 && y<340){
@@ -112,13 +115,7 @@ int GraphicsClient::click(char * buf){
         return 4;
     }else if(x>650 && x<750 && y>360 && y<410){
         loadFile();
-        if(getBytesReady()>0){
-            char s[100];
-            getFilePath(s);
-            if(s[5]==0x0E){
-                
-            }
-        }
+        return 0;
     }else if(x>650 && x<670 && y>560 && y<580){
         return 6;
     }else if(x>680 && x<700 && y>560 && y<580){
@@ -130,8 +127,12 @@ int GraphicsClient::click(char * buf){
     }
 }
 
-string GraphicsClient::getFilePath(char * buf){
-        
+string GraphicsClient::getFilePath(char * buf, int numBytes){
+    string file = "";
+    for(int i = 6; i < numBytes; i+=2){
+        file+=(lshift(buf[i]))+buf[i+1];
+    }
+    return file;
 }
 
 /**

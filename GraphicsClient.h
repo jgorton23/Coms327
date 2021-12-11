@@ -41,7 +41,7 @@ class GraphicsClient{
         void pause();
         void play();
         void quit();
-        string getFilePath(char *);
+        string getFilePath(char *, int);
         int click(char *);
         void loadFile();
     private:

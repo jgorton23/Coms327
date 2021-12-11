@@ -66,7 +66,7 @@ unsigned char rule(unsigned char wrap, unsigned char** data, int x, int y, int w
 }
 
 int main(int argc, char *argv[]){
-    string file = "tests/test.txt"; //TODO
+    string file = ""; //TODO
     // CellularAutomaton ca = CellularAutomaton(file, 0);
     CellularAutomaton ca = CellularAutomaton(0,25,25);
     GraphicsClient gc = GraphicsClient("127.0.0.1",7777);
@@ -79,6 +79,7 @@ int main(int argc, char *argv[]){
         nanosleep(req,rem);
         if(gc.getBytesReady()>0){
             char buf[100];
+            int numBytes = gc.getBytesReady();
             gc.getBytes(buf);
             int code;
             switch(buf[5]){
@@ -110,8 +111,11 @@ int main(int argc, char *argv[]){
                 ca.displayCA(gc);
                 break;
                 case 0x0A:
-                file = gc.getFilePath(buf);
+                while(file==""){
+                    file = gc.getFilePath(buf, numBytes);
+                }
                 ca= CellularAutomaton(file, 0);
+                ca.displayCA(gc);
                 break;
             }
         }
