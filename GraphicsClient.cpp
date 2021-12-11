@@ -1,6 +1,5 @@
 using namespace std;
 
-#include "CellularAutomaton.h"
 #include "GraphicsClient.h"
 #include <string.h>
 #include <stdio.h>
@@ -14,6 +13,7 @@ using namespace std;
 
 
 #define shift(x) x>>4
+#define lshift(x) x<<4
 
 /**
  * @brief Construct a new Graphics Client:: Graphics Client object
@@ -55,7 +55,11 @@ int GraphicsClient::isPaused(){
 }
 
 void GraphicsClient::pause(){
-    paused=(paused+1)%2;
+    paused=1;
+}
+
+void GraphicsClient::play(){
+    paused=0;
 }
 
 int GraphicsClient::isRunning(){
@@ -64,6 +68,15 @@ int GraphicsClient::isRunning(){
 
 void GraphicsClient::quit(){
     running=0;
+}
+
+void GraphicsClient::loadFile(){
+    char message[100];
+    message[0]=0xFF;
+    message[1]=message[2]=message[3]=0x00;
+    message[4]=0x01;
+    message[5]=0x0E;
+    send(sockfd, message, 6, 0);
 }
 
 int GraphicsClient::getBytesReady(){
@@ -76,12 +89,49 @@ int GraphicsClient::getNumClicks(){
     return numClicks;
 }
 
-//TEST MOUSE METHOD
-void GraphicsClient::getClick(){
-    char buf[100];
-    read(sockfd, buf, 45);
-    numClicks++;
-    pause();
+void GraphicsClient::getBytes(char * buf){
+    read(sockfd, buf, getBytesReady());
+}
+
+int GraphicsClient::click(char * buf){
+    int x = ((lshift(lshift(lshift(buf[7]))))+(lshift(lshift(buf[8])))+(lshift(buf[9]))+ buf[10]);
+    int y = ((lshift(lshift(lshift(buf[11]))))+(lshift(lshift(buf[12])))+(lshift(buf[13]))+ buf[14]);
+    if(x>650 && x<750 && y>160 && y<210){
+        pause();
+    }else if(x>650 && x<750 && y>90 && y<140){
+        play();
+    }else if(x>650 && x<750 && y>500 && y<550){
+        quit();
+    }else if(x>650 && x<750 && y>430 && y<480){
+        return 1;
+    }else if(x>650 && x<750 && y>290 && y<340){
+        return 2;
+    }else if(x>650 && x<750 && y>220 && y<270){
+        return 3;
+    }else if(x>650 && x<750 && y>20 && y<70){
+        return 4;
+    }else if(x>650 && x<750 && y>360 && y<410){
+        loadFile();
+        if(getBytesReady()>0){
+            char s[100];
+            getFilePath(s);
+            if(s[5]==0x0E){
+                
+            }
+        }
+    }else if(x>650 && x<670 && y>560 && y<580){
+        return 6;
+    }else if(x>680 && x<700 && y>560 && y<580){
+        return 7;
+    }else if(x>710 && x<730 && y>560 && y<580){
+        return 8;
+    }else{
+        return 5;
+    }
+}
+
+string GraphicsClient::getFilePath(char * buf){
+        
 }
 
 /**

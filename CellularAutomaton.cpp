@@ -24,6 +24,19 @@ CellularAutomaton::CellularAutomaton(std::string file, int qstate){
     f >> height;
     f >> width;
     m = width>height?width:height;
+    if(m>200){
+        cellSize=1;
+        gapSize=0;
+    }else if(m>100){
+        cellSize=2;
+        gapSize=1;
+    }else if(m>=50){
+        cellSize=4;
+        gapSize=1;
+    }else if(m>1){
+        cellSize=10;
+        gapSize=4;
+    }
     //allocate memory for the 2D array
     cadata = (unsigned char **)malloc(width*sizeof(unsigned char*));
     if(cadata == NULL){
@@ -45,6 +58,84 @@ CellularAutomaton::CellularAutomaton(std::string file, int qstate){
         }
     }
     f.close();
+    //Keep track of original data
+    originalData = (unsigned char **)malloc(width*sizeof(unsigned char*));
+    if(originalData == NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+        for(int i = 0; i < width; i++){
+            originalData[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(originalData[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            originalData[j][i] = cadata[j][i];
+        }
+    }
+    
+}
+
+CellularAutomaton::CellularAutomaton(int qstate, int w, int h){
+    this->qstate = qstate;
+    wrap = 1;
+    width=w;
+    height=h;
+    m = w>h?w:h;
+    if(m>200){
+        cellSize=1;
+        gapSize=0;
+    }else if(m>100){
+        cellSize=2;
+        gapSize=1;
+    }else if(m>=50){
+        cellSize=4;
+        gapSize=1;
+    }else if(m>1){
+        cellSize=10;
+        gapSize=4;
+    }
+    cadata = (unsigned char **)malloc(w*sizeof(unsigned char*));
+    if(cadata == NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+        for(int i = 0; i < width; i++){
+            cadata[i]=(unsigned char *)malloc(h*sizeof(unsigned char));
+            if(cadata[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+    //initialize the array
+    for (int i = 0; i < h; i++){
+        for (int j = 0; j < w; j++){
+            cadata[j][i]=qstate+48;
+        }
+    }
+    originalData = (unsigned char **)malloc(width*sizeof(unsigned char*));
+    if(originalData == NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+        for(int i = 0; i < width; i++){
+            originalData[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(originalData[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            originalData[j][i] = qstate+48;
+        }
+    }
 }
 
 /**
@@ -58,6 +149,8 @@ CellularAutomaton::CellularAutomaton(const CellularAutomaton &other){
     qstate = other.qstate;
     m=other.m;
     wrap = other.wrap;
+    cellSize=other.cellSize;
+    gapSize=other.gapSize;
     cadata = (unsigned char**)malloc(width*sizeof(unsigned char*));
     if(cadata==NULL){
         cout << "Error mallocing array";
@@ -76,6 +169,24 @@ CellularAutomaton::CellularAutomaton(const CellularAutomaton &other){
             cadata[i][j] = other.cadata[i][j];
         }
     }
+    originalData = (unsigned char **)malloc(width*sizeof(unsigned char*));
+    if(originalData == NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+        for(int i = 0; i < width; i++){
+            originalData[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(originalData[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+    for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            originalData[j][i] = other.originalData[j][i];
+        }
+    }
 }
 
 /**
@@ -91,6 +202,9 @@ CellularAutomaton CellularAutomaton::operator=(const CellularAutomaton &rhs){
     std::swap(qstate, temp.qstate);
     std::swap(wrap, temp.wrap);
     std::swap(cadata, temp.cadata);
+    std::swap(cellSize, temp.cellSize);
+    std::swap(gapSize, temp.gapSize);
+    std::swap(originalData, temp.originalData);
     return *this;
 }
 
@@ -122,26 +236,58 @@ void CellularAutomaton::Step(unsigned char (* rule)(unsigned char, unsigned char
     swap(cadata, temp.cadata);
 }
 
+void CellularAutomaton::clear(){
+    for(int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            cadata[j][i]=48;
+        }
+    }
+}
+
+void CellularAutomaton::randomize(){
+    srand(time(0));
+    for(int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            int x = rand()%2;
+            cadata[j][i]=x+48;
+        }
+    }
+}
+
+void CellularAutomaton::reset(){
+    for(int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            cadata[j][i]=originalData[j][i];
+        }
+    }
+}
+
+int CellularAutomaton::getWidth(){
+    return width;
+}
+
+int CellularAutomaton::getHeight(){
+    return height;
+}
+
+int CellularAutomaton::getCellSize(){
+    return cellSize;
+}
+
+int CellularAutomaton::getGapSize(){
+    return gapSize;
+}
+
+void CellularAutomaton::setCell(int x, int y){
+    cadata[x][y]=(cadata[x][y]-47)%2+48;
+}
+
 /**
  * @brief function to display the CA on the graphics server in the given window
  * 
  * @param window the window on which to display the 2DCA
  */
 void CellularAutomaton::displayCA(GraphicsClient &window){
-    int cellSize, gapSize;
-    if(m>200){
-        cellSize=1;
-        gapSize=0;
-    }else if(m>100){
-        cellSize=2;
-        gapSize=1;
-    }else if(m>50){
-        cellSize=4;
-        gapSize=1;
-    }else if(m>1){
-        cellSize=10;
-        gapSize=4;
-    }
     //window.setBackgroundColor(255,255,255);
     window.clear();
     window.repaint();
@@ -164,13 +310,19 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
     window.drawString(675,450, "clear");
     window.drawRectangle(650,500,100,50);
     window.drawString(675,520, "quit");
+    window.drawRectangle(650,560,20,20);
+    window.drawString(655,575, "S");
+    window.drawRectangle(680,560,20,20);
+    window.drawString(685,575, "M");
+    window.drawRectangle(710,560,20,20);
+    window.drawString(715,575, "L");
     
     //DRAW CELLS
     for(int i = 0; i < height; i++){
         for(int j = 0; j < width; j++){
             if(m<=50){
                 if(cadata[j][i]==48){ //use 48 bc 48 is what 0 is represented as
-                    window.drawRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
+                    //window.drawRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
                 }else{
                     window.fillRectangle(cellSize*j+gapSize*(j-1),cellSize*i+gapSize*(i-1),cellSize, cellSize);
                 }
@@ -182,22 +334,5 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
             }
         }
     }
-
-    //GET MOUSE INPUT MOVING TO MAIN METHOD
-    //window.drawString(700,35,"0");
-    // stringstream ss2;
-    // ss2 << window.getBytesReady();
-    // string s2 = ss2.str();
-    // window.drawString(700,110,s2);
-
-    //window.getBytesReady();
-    // if(window.getBytesReady()>0){
-    //     window.getClick();
-    // }
-    // stringstream ss;
-    // ss << window.getNumClicks();
-    // string s = ss.str();
-    // window.drawString(700,35,s);
-
     window.repaint();
 }

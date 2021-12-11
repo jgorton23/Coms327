@@ -67,17 +67,53 @@ unsigned char rule(unsigned char wrap, unsigned char** data, int x, int y, int w
 
 int main(int argc, char *argv[]){
     string file = "tests/test.txt"; //TODO
-    CellularAutomaton ca = CellularAutomaton(file, 0);
+    // CellularAutomaton ca = CellularAutomaton(file, 0);
+    CellularAutomaton ca = CellularAutomaton(0,25,25);
     GraphicsClient gc = GraphicsClient("127.0.0.1",7777);
     ca.displayCA(gc);
     timespec* req = (timespec *)malloc(sizeof(timespec));
     timespec* rem = (timespec *)malloc(sizeof(timespec));
-    req->tv_sec=1;
-    //req->tv_nsec=1000000000;
+    // req->tv_sec=1;
+    req->tv_nsec=100000000;
     while(1 && gc.isRunning()){
         nanosleep(req,rem);
         if(gc.getBytesReady()>0){
-            gc.getClick();
+            char buf[100];
+            gc.getBytes(buf);
+            int code;
+            switch(buf[5]){
+                case 1:
+                case 2:
+                case 3:
+                code = gc.click(buf);
+                if(code==1){
+                    ca.clear();
+                }else if(code==2){
+                    ca.randomize();
+                }else if(code==3){
+                    ca.reset();
+                }else if(code==4){
+                    ca.Step(rule);
+                }else if(code==5){
+                    int x = ((lshift(lshift(lshift(buf[7]))))+(lshift(lshift(buf[8])))+(lshift(buf[9]))+ buf[10]);
+                    int y = ((lshift(lshift(lshift(buf[11]))))+(lshift(lshift(buf[12])))+(lshift(buf[13]))+ buf[14]);
+                    if(x<(ca.getWidth()*(ca.getCellSize()+ca.getGapSize())) && y<(ca.getHeight()*(ca.getCellSize()+ca.getGapSize()))){
+                        ca.setCell(x/(ca.getCellSize()+ca.getGapSize()),y/(ca.getCellSize()+ca.getGapSize()));
+                    }
+                }else if(code==6){
+                    ca= CellularAutomaton(0,25,25);
+                }else if(code==7){
+                    ca = CellularAutomaton(0,50,50);
+                }else if(code==8){
+                    ca = CellularAutomaton(0,75,75);
+                }
+                ca.displayCA(gc);
+                break;
+                case 0x0A:
+                file = gc.getFilePath(buf);
+                ca= CellularAutomaton(file, 0);
+                break;
+            }
         }
         if(!gc.isPaused()){
             ca.Step(rule);

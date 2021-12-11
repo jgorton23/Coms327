@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_CLIENT_H
 #define GRAPHICS_CLIENT_H
 
-#include "CellularAutomaton.h"
+// #include "CellularAutomaton.h"
 #include "GraphicsClient.h"
 #include <string.h>
 #include <stdio.h>
@@ -33,13 +33,17 @@ class GraphicsClient{
         void drawLine(int, int, int, int);
         void drawString(int, int, string);
         void repaint();
-        void getClick(); //test method
+        void getBytes(char *); //test method
         int getBytesReady();
         int getNumClicks();
         int isPaused();
         int isRunning();
         void pause();
+        void play();
         void quit();
+        string getFilePath(char *);
+        int click(char *);
+        void loadFile();
     private:
         int running;
         int paused;
