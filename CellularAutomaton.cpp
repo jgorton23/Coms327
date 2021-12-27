@@ -291,7 +291,7 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
     //window.setBackgroundColor(255,255,255);
     window.clear();
     window.repaint();
-    window.setDrawingColor(255,255,255);
+    window.setDrawingColor(0,0,0);
     //DRAW BUTTONS
     window.drawLine(600,0,600,600);
     window.drawRectangle(650,20,100,50);

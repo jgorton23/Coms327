@@ -84,8 +84,8 @@ int main(int argc, char *argv[]){
             int code;
             switch(buf[5]){
                 case 1:
-                case 2:
-                case 3:
+                // case 2:
+                // case 3:
                 code = gc.click(buf);
                 if(code==1){
                     ca.clear();
