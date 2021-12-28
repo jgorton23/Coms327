@@ -26,11 +26,13 @@ class CellularAutomaton{
         int getCellSize();
         int getGapSize();
         void setCell(int,int);
+        int sumSurrounding(int, int);
     private:
         int width, height, m, qstate, cellSize, gapSize;
         unsigned char** cadata;
         unsigned char wrap;
         unsigned char** originalData;
+        unsigned char** changelog;
 };
 
 #endif

@@ -77,6 +77,25 @@ CellularAutomaton::CellularAutomaton(std::string file, int qstate){
             originalData[j][i] = cadata[j][i];
         }
     }
+
+    changelog = (unsigned char **)malloc(width*sizeof(unsigned char*));
+    if(changelog==NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+         for(int i = 0; i < width; i++){
+            changelog[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(changelog[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+     for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            changelog[j][i] = 1;
+        }
+    }
     
 }
 
@@ -136,6 +155,25 @@ CellularAutomaton::CellularAutomaton(int qstate, int w, int h){
             originalData[j][i] = qstate+48;
         }
     }
+
+    changelog = (unsigned char **)malloc(width*sizeof(unsigned char*));
+    if(changelog==NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+         for(int i = 0; i < width; i++){
+            changelog[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(changelog[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+     for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            changelog[j][i] = 1;
+        }
+    }
 }
 
 /**
@@ -187,6 +225,25 @@ CellularAutomaton::CellularAutomaton(const CellularAutomaton &other){
             originalData[j][i] = other.originalData[j][i];
         }
     }
+
+    changelog = (unsigned char **)malloc(width*sizeof(unsigned char*));
+    if(changelog==NULL){
+        cout << "Error mallocing array";
+        exit(-1);
+    }else{
+         for(int i = 0; i < width; i++){
+            changelog[i]=(unsigned char *)malloc(height*sizeof(unsigned char));
+            if(changelog[i]==NULL){
+                cout << "Error mallocing array";
+                exit(-1);
+            }
+        }
+    }
+     for (int i = 0; i < height; i++){
+        for (int j = 0; j < width; j++){
+            changelog[j][i] = 1;
+        }
+    }
 }
 
 /**
@@ -205,6 +262,7 @@ CellularAutomaton CellularAutomaton::operator=(const CellularAutomaton &rhs){
     std::swap(cellSize, temp.cellSize);
     std::swap(gapSize, temp.gapSize);
     std::swap(originalData, temp.originalData);
+    std::swap(changelog, temp.changelog);
     return *this;
 }
 
@@ -215,8 +273,12 @@ CellularAutomaton CellularAutomaton::operator=(const CellularAutomaton &rhs){
 CellularAutomaton::~CellularAutomaton(){
     for(int i = 0; i < width; i++){
         delete cadata[i];
+        delete originalData[i];
+        delete changelog[i];
     }
     delete cadata;
+    delete originalData;
+    delete changelog;
 }
 
 /**
@@ -229,11 +291,32 @@ void CellularAutomaton::Step(unsigned char (* rule)(unsigned char, unsigned char
     unsigned char result;
     for(int i = 0; i < height; i++){
         for (int j = 0; j < width; j++){
-            result = rule(wrap, cadata, j,i,width,height,qstate);
-            temp.cadata[j][i]=result;
+            if(sumSurrounding(i,j)>0){
+                result = rule(wrap, cadata, j,i,width,height,qstate);
+                if(result!=temp.cadata[j][i]){
+                    temp.cadata[j][i]=result;
+                    changelog[j][i]=1;
+                }else{
+                    changelog[j][i]=0;
+                }
+            }
         }
     }
     swap(cadata, temp.cadata);
+}
+
+int CellularAutomaton::sumSurrounding(int i, int j){
+    int sum = 0;
+    int iStart = i==0?1:0;
+    int iEnd = i==height-1?2:3;
+    int jStart = j==0?1:0;
+    int jEnd = j==width-1?2:3;
+    for(; iStart < iEnd; iStart++){
+        for(; jStart < jEnd; jStart++){
+            sum+=changelog[jStart][iStart];
+        }
+    }
+    return sum;
 }
 
 void CellularAutomaton::clear(){
@@ -291,7 +374,7 @@ void CellularAutomaton::displayCA(GraphicsClient &window){
     //window.setBackgroundColor(255,255,255);
     window.clear();
     window.repaint();
-    window.setDrawingColor(0,0,0);
+    window.setDrawingColor(255,0,0);
     //DRAW BUTTONS
     window.drawLine(600,0,600,600);
     window.drawRectangle(650,20,100,50);
