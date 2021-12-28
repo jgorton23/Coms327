@@ -66,7 +66,7 @@ unsigned char rule(unsigned char wrap, unsigned char** data, int x, int y, int w
 }
 
 int main(int argc, char *argv[]){
-    string file = ""; //TODO
+    string file = "";
     // CellularAutomaton ca = CellularAutomaton(file, 0);
     CellularAutomaton ca = CellularAutomaton(0,25,25);
     GraphicsClient gc = GraphicsClient("127.0.0.1",7777);
@@ -106,7 +106,7 @@ int main(int argc, char *argv[]){
                 }else if(code==7){
                     ca = CellularAutomaton(0,50,50);
                 }else if(code==8){
-                    ca = CellularAutomaton(0,75,75);
+                    ca = CellularAutomaton(0,200,200);
                 }
                 ca.displayCA(gc);
                 break;

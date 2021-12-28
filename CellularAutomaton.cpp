@@ -295,14 +295,15 @@ void CellularAutomaton::Step(unsigned char (* rule)(unsigned char, unsigned char
                 result = rule(wrap, cadata, j,i,width,height,qstate);
                 if(result!=temp.cadata[j][i]){
                     temp.cadata[j][i]=result;
-                    changelog[j][i]=1;
+                    temp.changelog[j][i]=1;
                 }else{
-                    changelog[j][i]=0;
+                    temp.changelog[j][i]=0;
                 }
             }
         }
     }
     swap(cadata, temp.cadata);
+    swap(changelog, temp.changelog);
 }
 
 int CellularAutomaton::sumSurrounding(int i, int j){
@@ -310,11 +311,13 @@ int CellularAutomaton::sumSurrounding(int i, int j){
     int iStart = i==0?1:0;
     int iEnd = i==height-1?2:3;
     int jStart = j==0?1:0;
+    int originalJStart = jStart;
     int jEnd = j==width-1?2:3;
     for(; iStart < iEnd; iStart++){
         for(; jStart < jEnd; jStart++){
-            sum+=changelog[jStart][iStart];
+            sum+=changelog[j-1+jStart][i-1+iStart];
         }
+        jStart=originalJStart;
     }
     return sum;
 }
